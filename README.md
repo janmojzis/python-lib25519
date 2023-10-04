@@ -15,6 +15,9 @@ Shared-secret generation:
 
     bobk = x25519.dh(alicepk, bobsk)
     alicek = x25519.dh(bobpk, alicesk)
+
+Check:
+
     assert (alicek == bobk)
     
 ### Ed25519
@@ -35,4 +38,6 @@ Signature generation:
 Signature verification and message recovery:
 
     recoveredm = ed25519.open(sm, alicepk)
+
+Check:
     assert (m == recoveredm)
