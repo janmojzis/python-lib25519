@@ -40,4 +40,5 @@ Signature verification and message recovery:
     recoveredm = ed25519.open(sm, alicepk)
 
 Check:
+
     assert (m == recoveredm)
