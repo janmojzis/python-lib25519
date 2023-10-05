@@ -64,7 +64,7 @@ class x25519:
     SECRETKEYBYTES = 32
     BYTES = 32
 
-    def keypair(self) -> (bytes, bytes):
+    def keypair(self) -> _Tuple[bytes, bytes]:
         '''
         Keypair - randomly generates secret key and corresponding public key.
         Returns:
@@ -79,7 +79,7 @@ class x25519:
         c_keypair(pk, sk)
         return pk.raw, sk.raw
 
-    def dh(self, pk: bytes, sk: bytes) -> (bytes):
+    def dh(self, pk: bytes, sk: bytes) -> bytes:
         '''
         Diffe-Helman - computes shared secret.
         Parameters:
@@ -106,7 +106,7 @@ class ed25519:
     SECRETKEYBYTES = 64
     BYTES = 64
 
-    def keypair(self) -> (bytes, bytes):
+    def keypair(self) -> _Tuple[bytes, bytes]:
         '''
         Keypair - randomly generates secret key and corresponding public key.
         Returns:
