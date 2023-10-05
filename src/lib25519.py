@@ -64,6 +64,17 @@ class x25519:
     SECRETKEYBYTES = 32
     BYTES = 32
 
+    def init(self) -> None:
+        '''
+        '''
+
+        self._c_keypair = getattr(_lib, 'lib25519_dh_x25519_keypair')
+        self._c_keypair.argtypes = [_ct.c_char_p, _ct.c_char_p]
+        self._c_keypair.restype = None
+        self._c_dh = getattr(_lib, 'lib25519_dh_x25519')
+        self._c_dh.argtypes = [_ct.c_char_p, _ct.c_char_p, _ct.c_char_p]
+        self._c_dh.restype = None
+
     def keypair(self) -> _Tuple[bytes, bytes]:
         '''
         Keypair - randomly generates secret key and corresponding public key.
@@ -73,10 +84,7 @@ class x25519:
         '''
         pk = _ct.create_string_buffer(self.PUBLICKEYBYTES)
         sk = _ct.create_string_buffer(self.SECRETKEYBYTES)
-        c_keypair = getattr(_lib, 'lib25519_dh_x25519_keypair')
-        c_keypair.argtypes = [_ct.c_char_p, _ct.c_char_p]
-        c_keypair.restype = None
-        c_keypair(pk, sk)
+        self.c_keypair(pk, sk)
         return pk.raw, sk.raw
 
     def dh(self, pk: bytes, sk: bytes) -> bytes:
@@ -90,11 +98,8 @@ class x25519:
         '''
         _check_input(pk, self.PUBLICKEYBYTES, 'pk')
         _check_input(sk, self.SECRETKEYBYTES, 'sk')
-        c_enc = getattr(_lib, 'lib25519_dh_x25519')
-        c_enc.argtypes = [_ct.c_char_p, _ct.c_char_p, _ct.c_char_p]
-        c_enc.restype = None
         k = _ct.create_string_buffer(self.BYTES)
-        c_enc(k, pk, sk)
+        self._c_dh(k, pk, sk)
         return k.raw
 
 
@@ -106,6 +111,22 @@ class ed25519:
     SECRETKEYBYTES = 64
     BYTES = 64
 
+    def init(self) -> None:
+        '''
+        '''
+        self._c_keypair = getattr(_lib, 'lib25519_sign_ed25519_keypair')
+        self._c_keypair.argtypes = [_ct.c_char_p, _ct.c_char_p]
+        self._c_keypair.restype = None
+        self._c_sign = getattr(_lib, 'lib25519_sign_ed25519')
+        self._c_sign.argtypes = [_ct.c_char_p, _ct.POINTER(
+            _ct.c_longlong), _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
+        self._c_sign.restype = None
+        self._c_open = getattr(_lib, 'lib25519_sign_ed25519_open')
+        self._c_open.argtypes = [_ct.c_char_p, _ct.POINTER(
+            _ct.c_longlong), _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
+        self._c_open.restype = _ct.c_int
+
+
     def keypair(self) -> _Tuple[bytes, bytes]:
         '''
         Keypair - randomly generates secret key and corresponding public key.
@@ -115,10 +136,7 @@ class ed25519:
         '''
         pk = _ct.create_string_buffer(self.PUBLICKEYBYTES)
         sk = _ct.create_string_buffer(self.SECRETKEYBYTES)
-        c_keypair = getattr(_lib, 'lib25519_sign_ed25519_keypair')
-        c_keypair.argtypes = [_ct.c_char_p, _ct.c_char_p]
-        c_keypair.restype = None
-        c_keypair(pk, sk)
+        self._c_keypair(pk, sk)
         return pk.raw, sk.raw
 
     def sign(self, m: bytes, sk: bytes) -> bytes:
@@ -137,11 +155,7 @@ class ed25519:
         sm = _ct.create_string_buffer(len(m) + self.BYTES)
         m = _ct.create_string_buffer(m)
         sk = _ct.create_string_buffer(sk)
-        c_sign = getattr(_lib, 'lib25519_sign_ed25519')
-        c_sign.argtypes = [_ct.c_char_p, _ct.POINTER(
-            _ct.c_longlong), _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
-        c_sign.restype = None
-        c_sign(sm, _ct.byref(smlen), m, mlen, sk)
+        self._c_sign(sm, _ct.byref(smlen), m, mlen, sk)
         return sm.raw[:smlen.value]
 
     def open(self, sm: bytes, pk: bytes) -> bytes:
@@ -159,11 +173,7 @@ class ed25519:
         m = _ct.create_string_buffer(len(sm))
         mlen = _ct.c_longlong(0)
         pk = _ct.create_string_buffer(pk)
-        c_open = getattr(_lib, 'lib25519_sign_ed25519_open')
-        c_open.argtypes = [_ct.c_char_p, _ct.POINTER(
-            _ct.c_longlong), _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
-        c_open.restype = _ct.c_int
-        if c_open(m, _ct.byref(mlen), sm, smlen, pk):
+        if self._c_open(m, _ct.byref(mlen), sm, smlen, pk):
             raise Exception('open failed')
         return m.raw[:mlen.value]
 
