@@ -12,3 +12,10 @@ license = {file = "LICENSE"}
 authors = [
     {name = "Jan Mojžíš", email = "jan.mojzis@gmail.com"},
 ]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
