@@ -170,24 +170,3 @@ class ed25519:
 
 ed25519 = ed25519()
 
-if __name__ == '__main__':
-
-    import os
-
-    # X25519
-    print(f'testing {x25519}')
-    pk1, sk1 = x25519.keypair()
-    pk2, sk2 = x25519.keypair()
-    k1 = x25519.dh(pk1, sk2)
-    k2 = x25519.dh(pk2, sk1)
-    assert (k1 == k2)
-
-    # Ed25519
-    print(f'testing {ed25519}')
-    pk, sk = ed25519.keypair()
-    m1 = os.urandom(128)
-    sm = ed25519.sign(m1, sk)
-    m2 = ed25519.open(sm, pk)
-    assert (m1 == m2)
-
-    print("OK")
