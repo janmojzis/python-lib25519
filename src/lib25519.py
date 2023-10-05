@@ -126,7 +126,6 @@ class ed25519:
             _ct.c_longlong), _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
         self._c_open.restype = _ct.c_int
 
-
     def keypair(self) -> _Tuple[bytes, bytes]:
         '''
         Keypair - randomly generates secret key and corresponding public key.
@@ -179,4 +178,3 @@ class ed25519:
 
 
 ed25519 = ed25519()
-

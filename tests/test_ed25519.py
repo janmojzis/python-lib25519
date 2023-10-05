@@ -1,6 +1,7 @@
 from lib25519 import ed25519
 import os
 
+
 def test_ed25519():
     pk, sk = ed25519.keypair()
     m1 = os.urandom(128)

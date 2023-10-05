@@ -1,5 +1,6 @@
 from lib25519 import x25519
 
+
 def test_x25519():
 
     pk1, sk1 = x25519.keypair()
