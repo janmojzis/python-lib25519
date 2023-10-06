@@ -64,7 +64,7 @@ class x25519:
     SECRETKEYBYTES = 32
     BYTES = 32
 
-    def init(self) -> None:
+    def __init__(self) -> None:
         '''
         '''
 
@@ -111,7 +111,7 @@ class ed25519:
     SECRETKEYBYTES = 64
     BYTES = 64
 
-    def init(self) -> None:
+    def __init__(self) -> None:
         '''
         '''
         self._c_keypair = getattr(_lib, 'lib25519_sign_ed25519_keypair')
