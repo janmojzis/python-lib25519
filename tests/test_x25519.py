@@ -8,3 +8,6 @@ def test_x25519():
     k1 = x25519.dh(pk1, sk2)
     k2 = x25519.dh(pk2, sk1)
     assert (k1 == k2)
+
+if __name__ == 'main':
+    test_x25519()
