@@ -84,7 +84,7 @@ class x25519:
         '''
         pk = _ct.create_string_buffer(self.PUBLICKEYBYTES)
         sk = _ct.create_string_buffer(self.SECRETKEYBYTES)
-        self.c_keypair(pk, sk)
+        self._c_keypair(pk, sk)
         return pk.raw, sk.raw
 
     def dh(self, pk: bytes, sk: bytes) -> bytes:
