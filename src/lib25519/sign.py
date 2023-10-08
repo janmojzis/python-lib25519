@@ -1,15 +1,6 @@
-from ctypes.util import find_library as _find_library
 from typing import Tuple as _Tuple
 import ctypes as _ct
-
-_lib = _ct.CDLL(_find_library('25519'))
-
-
-def _check_input(x, xlen, name):
-    if not isinstance(x, bytes):
-        raise TypeError(f'{name} must be bytes')
-    if xlen != -1 and xlen != len(x):
-        raise ValueError(f'{name} length must have exactly {xlen} bytes')
+from ._lib import _lib
 
 
 class ed25519:
