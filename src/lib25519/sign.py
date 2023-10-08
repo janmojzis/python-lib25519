@@ -1,50 +1,3 @@
-'''
-Python wrapper around implementation of the X25519 and Ed25519 cryptosystems
-
-### X25519
-
-Import library:
-
-    from lib25519 import x25519
-
-Key generation:
-
-    alicepk, alicesk = x25519.keypair()
-    bobpk, bobsk = x25519.keypair()
-
-Shared-secret generation:
-
-    bobk = x25519.dh(alicepk, bobsk)
-    alicek = x25519.dh(bobpk, alicesk)
-
-Check:
-
-    assert (alicek == bobk)
-
-### Ed25519
-
-Import library:
-
-    from lib25519 import ed25519
-
-Key generation:
-
-    alicepk, alicesk = ed25519.keypair()
-
-Signature generation:
-
-    m = b'Hello'
-    sm = ed25519.sign(m, alicesk)
-
-Signature verification and message recovery:
-
-    recoveredm = ed25519.open(sm, alicepk)
-
-Check:
-
-    assert (m == recoveredm)
-'''
-
 from ctypes.util import find_library as _find_library
 from typing import Tuple as _Tuple
 import ctypes as _ct
@@ -57,53 +10,6 @@ def _check_input(x, xlen, name):
         raise TypeError(f'{name} must be bytes')
     if xlen != -1 and xlen != len(x):
         raise ValueError(f'{name} length must have exactly {xlen} bytes')
-
-
-class x25519:
-    PUBLICKEYBYTES = 32
-    SECRETKEYBYTES = 32
-    BYTES = 32
-
-    def __init__(self) -> None:
-        '''
-        '''
-
-        self._c_keypair = getattr(_lib, 'lib25519_dh_x25519_keypair')
-        self._c_keypair.argtypes = [_ct.c_char_p, _ct.c_char_p]
-        self._c_keypair.restype = None
-        self._c_dh = getattr(_lib, 'lib25519_dh_x25519')
-        self._c_dh.argtypes = [_ct.c_char_p, _ct.c_char_p, _ct.c_char_p]
-        self._c_dh.restype = None
-
-    def keypair(self) -> _Tuple[bytes, bytes]:
-        '''
-        Keypair - randomly generates secret key and corresponding public key.
-        Returns:
-            pk (bytes): public key
-            sk (bytes): sectet key
-        '''
-        pk = _ct.create_string_buffer(self.PUBLICKEYBYTES)
-        sk = _ct.create_string_buffer(self.SECRETKEYBYTES)
-        self._c_keypair(pk, sk)
-        return pk.raw, sk.raw
-
-    def dh(self, pk: bytes, sk: bytes) -> bytes:
-        '''
-        Diffe-Helman - computes shared secret.
-        Parameters:
-            pk (bytes): public key
-            sk (bytes): secret key
-        Returns:
-            k (bytes): shared secret
-        '''
-        _check_input(pk, self.PUBLICKEYBYTES, 'pk')
-        _check_input(sk, self.SECRETKEYBYTES, 'sk')
-        k = _ct.create_string_buffer(self.BYTES)
-        self._c_dh(k, pk, sk)
-        return k.raw
-
-
-x25519 = x25519()
 
 
 class ed25519:
