@@ -28,7 +28,7 @@ class ed25519:
         Keypair - randomly generates secret key and corresponding public key.
         Returns:
             pk (bytes): public key
-            sk (bytes): sectet key
+            sk (bytes): secret key
         '''
         pk = _ct.create_string_buffer(self.PUBLICKEYBYTES)
         sk = _ct.create_string_buffer(self.SECRETKEYBYTES)
@@ -40,7 +40,7 @@ class ed25519:
         Signature generation - signs the message 'm' using secret key 'sk' and returns signed message 'sm'.
         Parameters:
             m (bytes): message
-            sk (bytes): sectet key
+            sk (bytes): secret key
         Returns:
             sm (bytes): signed message
         '''

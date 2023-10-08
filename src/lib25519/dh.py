@@ -24,7 +24,7 @@ class x25519:
         Keypair - randomly generates secret key and corresponding public key.
         Returns:
             pk (bytes): public key
-            sk (bytes): sectet key
+            sk (bytes): secret key
         '''
         pk = _ct.create_string_buffer(self.PUBLICKEYBYTES)
         sk = _ct.create_string_buffer(self.SECRETKEYBYTES)
