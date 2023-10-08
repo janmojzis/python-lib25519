@@ -1,6 +1,6 @@
 from typing import Tuple as _Tuple
 import ctypes as _ct
-from ._lib import _lib
+from ._lib import _lib, _check_input
 
 
 class ed25519:
