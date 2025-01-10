@@ -1,7 +1,10 @@
 from ctypes.util import find_library as _find_library
 from ctypes import CDLL as _CDLL
 
-_lib = _CDLL(_find_library('25519'))
+_libname = _find_library('lib25519')
+if _libname is None:
+    raise FileNotFoundError("unable to locate library 'lib25519'")
+_lib = _CDLL(_libname)
 
 
 def _check_input(x, xlen, name):
