@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+
+helpstr = "'''\n"
+with open('README.md') as f:
+    helpstr += f.read()
+helpstr += "'''\n"
+
+with open(f'src/lib25519/__init__.py', 'w') as f:
+    f.write(helpstr)
+    f.write('\n')
+    f.write('from .dh import x25519\n')
+    f.write('from .sign import ed25519\n')
