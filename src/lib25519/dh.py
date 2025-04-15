@@ -1,9 +1,17 @@
+'''
+Diffie–Hellman secret-sharing
+'''
+
+
 from typing import Tuple as _Tuple
 import ctypes as _ct
 from ._lib import _lib, _check_input
 
 
-class x25519:
+class X25519:
+    '''
+    X25519 Diffie–Hellman secret-sharing module
+    '''
     PUBLICKEYBYTES = 32
     SECRETKEYBYTES = 32
     BYTES = 32
@@ -47,4 +55,4 @@ class x25519:
         return k.raw
 
 
-x25519 = x25519()
+x25519 = X25519()

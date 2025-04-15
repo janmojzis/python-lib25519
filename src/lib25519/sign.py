@@ -1,9 +1,16 @@
+'''
+Signature systems
+'''
+
 from typing import Tuple as _Tuple
 import ctypes as _ct
 from ._lib import _lib, _check_input
 
 
-class ed25519:
+class Ed25519:
+    '''
+    Ed25519 signature module
+    '''
     PUBLICKEYBYTES = 32
     SECRETKEYBYTES = 64
     BYTES = 64
@@ -26,6 +33,7 @@ class ed25519:
     def keypair(self) -> _Tuple[bytes, bytes]:
         '''
         Keypair - randomly generates secret key and corresponding public key.
+
         Returns:
             pk (bytes): public key
             sk (bytes): secret key
@@ -37,10 +45,13 @@ class ed25519:
 
     def sign(self, m: bytes, sk: bytes) -> bytes:
         '''
-        Signature generation - signs the message 'm' using secret key 'sk' and returns signed message 'sm'.
+        Signature generation - signs the message 'm' using secret key 'sk'
+        and returns signed message 'sm'.
+
         Parameters:
             m (bytes): message
             sk (bytes): secret key
+
         Returns:
             sm (bytes): signed message
         '''
@@ -56,10 +67,15 @@ class ed25519:
 
     def open(self, sm: bytes, pk: bytes) -> bytes:
         '''
-        Signature verification and message recovery - verifies the signed message 'sm' using public key 'pk', and then returns the verified message 'm'.
+        Signature verification and message recovery - verifies the signed message
+        'sm' using public key 'pk', and then returns the verified message 'm'.
         Parameters:
             sm (bytes): signed message
             pk (bytes): public key
+
+        Raises:
+            ValueError: signature fails verification
+
         Returns:
             m (bytes): message
         '''
@@ -70,8 +86,8 @@ class ed25519:
         mlen = _ct.c_longlong(0)
         pk = _ct.create_string_buffer(pk)
         if self._c_open(m, _ct.byref(mlen), sm, smlen, pk):
-            raise Exception('open failed')
+            raise ValueError('open failed')
         return m.raw[:mlen.value]
 
 
-ed25519 = ed25519()
+ed25519 = Ed25519()

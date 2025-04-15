@@ -3,8 +3,13 @@
 project='lib25519'
 libname='25519'
 
-lib="""from ctypes.util import find_library as _find_library
+lib="""'''
+Import shared library.
+'''
+
+
 from ctypes import CDLL as _CDLL
+from ctypes.util import find_library as _find_library
 
 _libname = _find_library('%s')
 if _libname is None:

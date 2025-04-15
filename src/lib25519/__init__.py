@@ -19,7 +19,7 @@ Shared-secret generation:
 
 Check:
 
-    assert (alicek == bobk)
+    assert alicek == bobk
 
 ### Ed25519
 
@@ -42,7 +42,7 @@ Signature verification and message recovery:
 
 Check:
 
-    assert (m == recoveredm)
+    assert m == recoveredm
 '''
 
 from .dh import x25519

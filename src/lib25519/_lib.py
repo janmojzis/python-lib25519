@@ -1,5 +1,10 @@
-from ctypes.util import find_library as _find_library
+'''
+Import shared library.
+'''
+
+
 from ctypes import CDLL as _CDLL
+from ctypes.util import find_library as _find_library
 
 _libname = _find_library('25519')
 if _libname is None:

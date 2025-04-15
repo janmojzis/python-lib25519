@@ -18,8 +18,8 @@ Shared-secret generation:
 
 Check:
 
-    assert (alicek == bobk)
-    
+    assert alicek == bobk
+
 ### Ed25519
 
 Import library:
@@ -41,4 +41,4 @@ Signature verification and message recovery:
 
 Check:
 
-    assert (m == recoveredm)
+    assert m == recoveredm
