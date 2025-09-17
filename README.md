@@ -1,4 +1,5 @@
-Python wrapper around implementation of the X25519 and Ed25519 cryptosystems
+Python wrapper around [lib25519](https://lib25519.cr.yp.to) library,
+wrapper around X25519 and Ed25519 cryptosystems.
 
 ### X25519
 
